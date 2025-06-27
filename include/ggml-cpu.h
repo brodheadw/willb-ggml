@@ -70,6 +70,14 @@ extern "C" {
     // note: the drawback of this API is that you must have ensured that the context has enough memory for the work data
     GGML_BACKEND_API enum ggml_status  ggml_graph_compute_with_ctx(struct ggml_context * ctx, struct ggml_cgraph * cgraph, int n_threads);
 
+#ifdef GGML_VIZ_ENABLE_HOOKS
+    // Visualization hooks for ggml-viz
+    extern void ggml_viz_hook_graph_compute_begin(const struct ggml_cgraph* graph);
+    extern void ggml_viz_hook_graph_compute_end(const struct ggml_cgraph* graph);
+    extern void ggml_viz_hook_op_compute_begin(const struct ggml_tensor* tensor);
+    extern void ggml_viz_hook_op_compute_end(const struct ggml_tensor* tensor);
+#endif
+
     //
     // system info
     //

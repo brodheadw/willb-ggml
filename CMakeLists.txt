@@ -85,6 +85,9 @@ option(GGML_ALL_WARNINGS           "ggml: enable all compiler warnings"         
 option(GGML_ALL_WARNINGS_3RD_PARTY "ggml: enable all compiler warnings in 3rd party libs" OFF)
 option(GGML_GPROF                  "ggml: enable gprof"                                   OFF)
 
+# visualization
+option(GGML_VIZ_ENABLE_HOOKS       "ggml: enable hooks for ggml-viz visualization"       OFF)
+
 # build
 option(GGML_FATAL_WARNINGS    "ggml: enable -Werror flag"    OFF)
 

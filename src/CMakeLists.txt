@@ -3,6 +3,10 @@ include("../cmake/common.cmake")
 
 add_compile_definitions(GGML_SCHED_MAX_COPIES=${GGML_SCHED_MAX_COPIES})
 
+if (GGML_VIZ_ENABLE_HOOKS)
+    add_compile_definitions(GGML_VIZ_ENABLE_HOOKS)
+endif()
+
 # enable libstdc++ assertions for debug builds
 if (CMAKE_SYSTEM_NAME MATCHES "Linux")
     add_compile_definitions($<$<CONFIG:Debug>:_GLIBCXX_ASSERTIONS>)
