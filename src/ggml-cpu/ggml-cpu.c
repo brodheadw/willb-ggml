@@ -3059,7 +3059,10 @@ enum ggml_status ggml_graph_compute(struct ggml_cgraph * cgraph, struct ggml_cpl
     ggml_cpu_init();
 
 #ifdef GGML_VIZ_ENABLE_HOOKS
+    printf("[DEBUG] GGML hooks enabled, calling graph compute begin\n");
     ggml_viz_hook_graph_compute_begin(cgraph);
+#else
+    printf("[DEBUG] GGML hooks NOT enabled\n");
 #endif
 
     GGML_ASSERT(cplan);

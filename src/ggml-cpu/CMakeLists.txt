@@ -67,6 +67,17 @@ function(ggml_add_cpu_backend_variant_impl tag_name)
         endif()
     endif()
 
+    # Link visualization hooks if enabled
+    if (GGML_VIZ_ENABLE_HOOKS)
+        # Find the ggml_hook target from the parent project
+        if (TARGET ggml_hook)
+            target_link_libraries(${GGML_CPU_NAME} PRIVATE ggml_hook)
+            message(STATUS "Linking ggml_hook to ${GGML_CPU_NAME}")
+        else()
+            message(WARNING "ggml_hook target not found for ${GGML_CPU_NAME}")
+        endif()
+    endif()
+
     if (GGML_OPENMP)
         find_package(OpenMP)
         if (OpenMP_FOUND)
