@@ -13,6 +13,14 @@
 #include "ggml-alloc.h"
 #include "ggml-impl.h"
 
+// GGML Viz hooks
+#ifdef GGML_VIZ_ENABLE_HOOKS
+extern "C" {
+    void ggml_viz_hook_graph_compute_begin(const struct ggml_cgraph* graph, const struct ggml_backend* backend);
+    void ggml_viz_hook_graph_compute_end(const struct ggml_cgraph* graph, const struct ggml_backend* backend);
+}
+#endif
+
 #include <assert.h>
 #include <limits.h>
 #include <stdarg.h>
@@ -325,8 +333,17 @@ enum ggml_status ggml_backend_graph_plan_compute(ggml_backend_t backend, ggml_ba
 }
 
 enum ggml_status ggml_backend_graph_compute(ggml_backend_t backend, struct ggml_cgraph * cgraph) {
+#ifdef GGML_VIZ_ENABLE_HOOKS
+    ggml_viz_hook_graph_compute_begin(cgraph, backend);
+#endif
+
     enum ggml_status err = ggml_backend_graph_compute_async(backend, cgraph);
     ggml_backend_synchronize(backend);
+
+#ifdef GGML_VIZ_ENABLE_HOOKS
+    ggml_viz_hook_graph_compute_end(cgraph, backend);
+#endif
+
     return err;
 }
 
