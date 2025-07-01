@@ -2807,19 +2807,9 @@ static thread_ret_t ggml_graph_compute_thread(void * data) {
     for (int node_n = 0; node_n < cgraph->n_nodes && atomic_load_explicit(&tp->abort, memory_order_relaxed) != node_n; node_n++) {
         struct ggml_tensor * node = cgraph->nodes[node_n];
 
-#ifdef GGML_VIZ_ENABLE_HOOKS
-        if (state->ith == 0) {  // Only call hooks from main thread to avoid duplicates
-            ggml_viz_hook_op_compute_begin(node);
-        }
-#endif
 
         ggml_compute_forward(&params, node);
 
-#ifdef GGML_VIZ_ENABLE_HOOKS
-        if (state->ith == 0) {  // Only call hooks from main thread to avoid duplicates
-            ggml_viz_hook_op_compute_end(node);
-        }
-#endif
 
         if (state->ith == 0 && cplan->abort_callback &&
                 cplan->abort_callback(cplan->abort_callback_data)) {
@@ -3058,12 +3048,6 @@ struct ggml_threadpool * ggml_threadpool_new(struct ggml_threadpool_params * tpp
 enum ggml_status ggml_graph_compute(struct ggml_cgraph * cgraph, struct ggml_cplan * cplan) {
     ggml_cpu_init();
 
-#ifdef GGML_VIZ_ENABLE_HOOKS
-    printf("[DEBUG] GGML hooks enabled, calling graph compute begin\n");
-    ggml_viz_hook_graph_compute_begin(cgraph);
-#else
-    printf("[DEBUG] GGML hooks NOT enabled\n");
-#endif
 
     GGML_ASSERT(cplan);
     GGML_ASSERT(cplan->n_threads > 0);
@@ -3129,9 +3113,6 @@ enum ggml_status ggml_graph_compute(struct ggml_cgraph * cgraph, struct ggml_cpl
         ggml_threadpool_free(threadpool);
     }
 
-#ifdef GGML_VIZ_ENABLE_HOOKS
-    ggml_viz_hook_graph_compute_end(cgraph);
-#endif
 
     return ret;
 }
