@@ -72,10 +72,10 @@ extern "C" {
 
 #ifdef GGML_VIZ_ENABLE_HOOKS
     // Visualization hooks for ggml-viz
-    extern void ggml_viz_hook_graph_compute_begin(const struct ggml_cgraph* graph);
-    extern void ggml_viz_hook_graph_compute_end(const struct ggml_cgraph* graph);
-    extern void ggml_viz_hook_op_compute_begin(const struct ggml_tensor* tensor);
-    extern void ggml_viz_hook_op_compute_end(const struct ggml_tensor* tensor);
+    extern void ggml_viz_hook_graph_compute_begin(const struct ggml_cgraph* graph, const struct ggml_backend* backend);
+    extern void ggml_viz_hook_graph_compute_end(const struct ggml_cgraph* graph, const struct ggml_backend* backend);
+    extern void ggml_viz_hook_op_compute_begin(const struct ggml_tensor* tensor, const struct ggml_backend* backend);
+    extern void ggml_viz_hook_op_compute_end(const struct ggml_tensor* tensor, const struct ggml_backend* backend);
 #endif
 
     //
